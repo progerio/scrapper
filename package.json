@@ -6,6 +6,7 @@
   "author": "Paulo Rogerio <paulo.rogeriobr@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "mongoose": "^5.9.22",
     "puppeteer": "^5.0.0"
   },
   "devDependencies": {
