@@ -1,0 +1,11 @@
+{
+  "name": "scrapper",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/progerio/scrapper.git",
+  "author": "Paulo Rogerio <paulo.rogeriobr@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^5.0.0"
+  }
+}
