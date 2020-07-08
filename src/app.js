@@ -45,7 +45,6 @@ const app = async () => {
        }
 	await browser.close();
 	database.close();
-	console.log('Pronto');
 }
 
 app();
