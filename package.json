@@ -11,5 +11,9 @@
   },
   "devDependencies": {
     "jest": "^26.1.0"
+  },
+  "scripts": {
+	  "start":"node src/app.js"
   }
+
 }
