@@ -13,7 +13,7 @@ const database = mongoose.connection;
 
 const LancamentoModel = require('./schema/lancamentoSchema.js');
 
-const app = async() => {
+const app = async () => {
     const directory = path.join(__dirname, '../html');
 	const files = fs.readdirSync(directory);
 	const browser = await puppeteer.launch();
