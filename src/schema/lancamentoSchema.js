@@ -33,6 +33,7 @@ const LancamentoSchema = new Schema({
 module.exports = mongoose.model('Lancamento', LancamentoSchema);
 
 
+
 	
 
 
