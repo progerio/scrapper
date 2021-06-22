@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+import { Schema as _Schema, model } from 'mongoose';
 
-const Schema = mongoose.Schema;
+const Schema = _Schema;
 
 const LancamentoSchema = new Schema({
 	identificador: String,
-	empresa : {
+	empresa: {
 		razaoSocial: String,
 		cnpj: String,
 		endereco: {
@@ -18,7 +18,7 @@ const LancamentoSchema = new Schema({
 	},
 	data: String,
 	formaPagamento: String,
-	items:[
+	items: [
 		{
 			descricao: String,
 			codigo: Number,
@@ -30,13 +30,4 @@ const LancamentoSchema = new Schema({
 	dataCadastro: { type: Date, default: new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }) }
 });
 
-module.exports = mongoose.model('Lancamento', LancamentoSchema);
-
-
-
-	
-
-
-
-
-
+export default model('Lancamento', LancamentoSchema);

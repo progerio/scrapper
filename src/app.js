@@ -1,48 +1,48 @@
-const fs = require('fs');
-const path = require('path');
-const puppeteer = require('puppeteer');
-const { fetchLancamento } = require('./scrapper');
-const mongoose = require('mongoose');
+import { readdirSync, existsSync, mkdirSync, rename } from 'fs';
+import { join, extname } from 'path';
+import { launch } from 'puppeteer';
+import { fetchLancamento } from './scrapper';
+import { connect, Promise, connection } from 'mongoose';
 
 const stringConnection = 'mongodb://localhost:27017/test';
 
-mongoose.connect(stringConnection, { useNewUrlParser: true, useUnifiedTopology: true }, (error) => { if (error) return console.log(error) });
-mongoose.Promise = global.Promise;
+connect(stringConnection, { useNewUrlParser: true, useUnifiedTopology: true }, (error) => { if (error) return console.log(error) });
+Promise = global.Promise;
 
-const database = mongoose.connection;
+const database = connection;
 
-const LancamentoModel = require('./schema/lancamentoSchema.js');
+import LancamentoModel, { findOne } from './schema/lancamentoSchema.js';
 
 const app = async () => {
-    const directory = path.join(__dirname, '../html');
-	const files = fs.readdirSync(directory);
-	const browser = await puppeteer.launch();
-        for (let file of files) {
+	const directory = join(__dirname, '../html');
+	const files = readdirSync(directory);
+	const browser = await launch();
+	for (let file of files) {
 		const page = await browser.newPage();
-		if( path.extname(file) === '.html' ){
-			let pathFile = path.join('file://', __dirname, '../html', file);
+		if (extname(file) === '.html') {
+			let pathFile = join('file://', __dirname, '../html', file);
 			await page.goto(pathFile);
 			const lancamento = await fetchLancamento(page);
-			let resultado = await LancamentoModel.findOne({identificador: lancamento.identificador});
-			
-			if(!resultado){
+			let resultado = await findOne({ identificador: lancamento.identificador });
+
+			if (!resultado) {
 				const document = new LancamentoModel(lancamento);
-				 document.save((err, doc) => {
-                   			 if (err) return console.error(err);
-                    			 console.log(lancamento.identificador);
-                		});
-				if (!fs.existsSync('./importados')) {
-    				    fs.mkdirSync('./importados');
-				}	
-				let pathAtual = path.join(__dirname, '../html', file);
-				let newPath = path.join(__dirname, '../importados', file);
-				
-				fs.rename(pathAtual, newPath, err => { if (err) return console.log(err); });
+				document.save((err, doc) => {
+					if (err) return console.error(err);
+					console.log(lancamento.identificador);
+				});
+				if (!existsSync('./importados')) {
+					mkdirSync('./importados');
+				}
+				let pathAtual = join(__dirname, '../html', file);
+				let newPath = join(__dirname, '../importados', file);
+
+				rename(pathAtual, newPath, err => { if (err) return console.log(err); });
 			}
-			
+
 		}
 		await page.close();
-       }
+	}
 	await browser.close();
 	database.close();
 }
